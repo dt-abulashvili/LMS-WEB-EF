@@ -1,6 +1,8 @@
-﻿namespace LMS_WEB.Models;
+﻿using LMS_WEB.Models.Interfaces;
 
-public class Customer
+namespace LMS_WEB.Models;
+
+public class Customer : ISoftDeletable
 {
     public int CustomerID { get; set; }
     public string FullName { get; set; } = null!;

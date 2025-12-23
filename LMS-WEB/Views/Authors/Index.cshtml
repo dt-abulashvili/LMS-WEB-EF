@@ -1,0 +1,74 @@
+﻿@model AuthorsViewModel
+
+<h2>Authors</h2>
+
+<div class="tab-content mt-3">
+    <div id="authors" class="tab-pane fade show active">
+        <form asp-action="AddAuthor" method="post" class="mb-3 d-flex">
+            <div class="col">
+                <input name="firstName" class="form-control me-2" placeholder="First name" required />
+            </div>
+            <div class="col">
+                <input name="lastName" class="form-control me-2" placeholder="Last name" required />
+            </div>
+            <div class="col">
+                <select name="cityId" class="form-select">
+                    @foreach (var c in Model.Cities)
+                    {
+                        <option value="@c.CityID">@c.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col">
+                <select name="nationalityId" class="form-select">
+                    @foreach (var n in Model.Nationalities)
+                    {
+                        <option value="@n.NationalityID">@n.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col">
+                <button class="btn btn-primary">Add</button>
+            </div>
+        </form>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Nationality</th>
+                    <th>Books Count</th>
+                    <th>View</th>
+                    <th>Delete</th>
+                    <th>Edit</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var author in Model.Authors)
+                {
+                    <tr>
+                        <td>@author.FirstName @author.LastName</td>
+                        <td>@author.Nationality?.Name</td>
+                        <td>@author.Books.Count</td>
+                        <td>
+                            <a asp-action="Details" asp-route-id="@author.AuthorID"
+                               class="btn btn-sm btn-primary">
+                                View
+                            </a>
+                        </td>
+                        <td>
+                            <a asp-action="DeleteAuthor" asp-route-id="@author.AuthorID"
+                               class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                        <td>
+                            <a asp-action="UpdateAuthor" asp-route-id="@author.AuthorID"
+                               class="btn btn-sm btn-secondary">Edit</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

@@ -1,9 +1,12 @@
-﻿namespace LMS_WEB.Models;
+﻿using LMS_WEB.Models.Interfaces;
 
-public class City
+namespace LMS_WEB.Models;
+
+public class City : ISoftDeletable
 {
     public int CityID { get; set; }
     public string Name { get; set; } = null!;
+    public bool IsDeleted { get; set; }
 
     // Country
     public int CountryID { get; set; }

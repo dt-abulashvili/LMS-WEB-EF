@@ -2,17 +2,8 @@
 
 namespace LMS_WEB.Repositories.Interfaces;
 
-public interface IBorrowingRepository
+public interface IBorrowingRepository : IGenericRepository<Borrowing>
 {
-    Task<Borrowing?> GetByIdAsync(int id);
-
-    Task<IEnumerable<Borrowing>> GetByCustomerAsync(int customerId);
-
-    Task<Borrowing?> GetWithDetailsAsync(int id);
-    // Books + Customer + Subscription
-
-    Task AddAsync(Borrowing borrowing);
-
-    Task ReturnBorrowingAsync(int borrowingId);
+    
 }
 

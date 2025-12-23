@@ -1,10 +1,21 @@
-﻿namespace LMS_WEB.Repositories.Interfaces;
+﻿using LMS_WEB.Models;
 
-public interface IUnitOfWork : IDisposable
+namespace LMS_WEB.Repositories.Interfaces
 {
-    IAuthorRepository Authors { get; }
-    ICustomerRepository Customers { get; }
+    public interface IUnitOfWork
+    {
+        IAuthorRepository Authors { get; }
+        IBookRepository Books { get; }
+        IBorrowingRepository Borrowings { get; }
+        IGenericRepository<City> Cities { get; }
+        IGenericRepository<Country> Countries { get; }
+        ICustomerRepository Customers { get; }
+        IGenericRepository<Genre> Genres { get; }
+        IGenericRepository<Nationality> Nationalities { get; }
+        IGenericRepository<Publisher> Publishers { get; }
+        ISubscriptionRepository Subscriptions { get; }
 
-    Task<int> SaveChangesAsync();
+        void Dispose();
+        Task<int> SaveChangesAsync();
+    }
 }
-

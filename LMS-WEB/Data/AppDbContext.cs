@@ -7,7 +7,9 @@ public class AppDbContext : DbContext
 {
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
     {
+
     }
+
     public DbSet<Book> Books { get; set; }
     public DbSet<Publisher> Publishers { get; set; }
     public DbSet<Author> Authors { get; set; }
@@ -86,11 +88,26 @@ public class AppDbContext : DbContext
         modelBuilder.Entity<Author>()
             .HasQueryFilter(a => !a.IsDeleted);
 
-        modelBuilder.Entity<Subscription>()
-            .HasQueryFilter(s => !s.Customer.IsDeleted);
-
         modelBuilder.Entity<Borrowing>()
-            .HasQueryFilter(b => !b.Customer.IsDeleted);
+            .HasQueryFilter(a => !a.IsDeleted);
+
+        modelBuilder.Entity<Subscription>()
+            .HasQueryFilter(a => !a.IsDeleted);
+
+        modelBuilder.Entity<Country>()
+            .HasQueryFilter(a => !a.IsDeleted);
+
+        modelBuilder.Entity<City>()
+            .HasQueryFilter(a => !a.IsDeleted);
+
+        modelBuilder.Entity<Nationality>()
+            .HasQueryFilter(a => !a.IsDeleted);
+
+        modelBuilder.Entity<Genre>()
+            .HasQueryFilter(a => !a.IsDeleted);
+
+        modelBuilder.Entity<Publisher>()
+            .HasQueryFilter(a => !a.IsDeleted);
     }
 
 }

@@ -5,18 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LMS_WEB.Repositories;
 
-public class SubscriptionRepository : ISubscriptionRepository
+internal class SubscriptionRepository : GenericRepository<Subscription>, ISubscriptionRepository
 {
     private readonly AppDbContext _dbContext;
 
-    public SubscriptionRepository(AppDbContext context)
+    public SubscriptionRepository(AppDbContext context) : base(context)
     {
         _dbContext = context;
-    }
-
-    public async Task AddAsync(Subscription subscription)
-    {
-        await _dbContext.Subscriptions.AddAsync(subscription);
     }
 
     public async Task CancelAsync(int subscriptionId)
@@ -35,11 +30,6 @@ public class SubscriptionRepository : ISubscriptionRepository
     public async Task<IEnumerable<Subscription>> GetByCustomerAsync(int customerId)
     {
         return await _dbContext.Subscriptions.Where(s => s.CustomerId == customerId).ToListAsync();
-    }
-
-    public async Task<Subscription?> GetByIdAsync(int id)
-    {
-        return await _dbContext.Subscriptions.FirstOrDefaultAsync(s => s.SubscriptionID == id);
     }
 
     public async Task<bool> HasActiveSubscriptionAsync(int customerId)

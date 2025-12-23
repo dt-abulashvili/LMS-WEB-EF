@@ -1,6 +1,8 @@
-﻿namespace LMS_WEB.Models;
+﻿using LMS_WEB.Models.Interfaces;
 
-public class Author
+namespace LMS_WEB.Models;
+
+public class Author : ISoftDeletable
 {
     public int AuthorID { get; set; }
     public string FirstName { get; set; } = null!;
@@ -14,7 +16,7 @@ public class Author
     public int CityID { get; set; }
     public City City { get; set; } = null!;
 
-    //Many-to-many
+    // One-to-many
     public ICollection<Book> Books { get; set; } = new List<Book>();
 
 }

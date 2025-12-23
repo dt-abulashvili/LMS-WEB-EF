@@ -1,9 +1,12 @@
-﻿namespace LMS_WEB.Models;
+﻿using LMS_WEB.Models.Interfaces;
 
-public class Publisher
+namespace LMS_WEB.Models;
+
+public class Publisher : ISoftDeletable
 {
     public int PublisherID { get; set; }
     public string Name { get; set; } = null!;
+    public bool IsDeleted { get; set; }
 
     // relationship with Employees
     public ICollection<Book> Books { get; set; } = new List<Book>();

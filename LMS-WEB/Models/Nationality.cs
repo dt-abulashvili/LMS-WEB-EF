@@ -1,9 +1,12 @@
-﻿namespace LMS_WEB.Models;
+﻿using LMS_WEB.Models.Interfaces;
 
-public class Nationality
+namespace LMS_WEB.Models;
+
+public class Nationality : ISoftDeletable
 {
     public int NationalityID { get; set; }
     public string Name { get; set; } = null!;
+    public bool IsDeleted { get; set; }
 
     // Relationship with Authors
     public ICollection<Author> Authors { get; set; } = new List<Author>();

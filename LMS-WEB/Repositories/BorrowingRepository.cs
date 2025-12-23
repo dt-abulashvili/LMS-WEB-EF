@@ -5,18 +5,13 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LMS_WEB.Repositories;
 
-public class BorrowingRepository : IBorrowingRepository
+internal class BorrowingRepository : GenericRepository<Borrowing>, IBorrowingRepository
 {
     private readonly AppDbContext _dbContext;
 
-    public BorrowingRepository(AppDbContext context)
+    public BorrowingRepository(AppDbContext context) : base(context)
     {
         _dbContext = context;
-    }
-
-    public async Task AddAsync(Borrowing borrowing)
-    {
-        await _dbContext.Borrowings.AddAsync(borrowing);
     }
 
     public async Task ReturnBorrowingAsync(int borrowingId)
@@ -36,11 +31,6 @@ public class BorrowingRepository : IBorrowingRepository
     public async Task<IEnumerable<Borrowing>> GetByCustomerAsync(int customerId)
     {
         return await _dbContext.Borrowings.Where(b => b.CustomerId == customerId).ToListAsync();
-    }
-
-    public async Task<Borrowing?> GetByIdAsync(int id)
-    {
-        return await _dbContext.Borrowings.FirstOrDefaultAsync(b => b.BorrowingId == id);
     }
 
     public async Task<Borrowing?> GetWithDetailsAsync(int id)

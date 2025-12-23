@@ -1,6 +1,7 @@
 using LMS_WEB.Data;
 using LMS_WEB.Repositories;
 using LMS_WEB.Repositories.Interfaces;
+using LMS_WEB.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace LMS_WEB;
@@ -19,6 +20,8 @@ public class Program
         builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
 
         builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+        builder.Services.AddScoped<AuthorService>();
+
 
         var app = builder.Build();
 

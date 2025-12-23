@@ -1,11 +1,14 @@
-﻿namespace LMS_WEB.Models;
+﻿using LMS_WEB.Models.Interfaces;
 
-public class Borrowing
+namespace LMS_WEB.Models;
+
+public class Borrowing : ISoftDeletable
 {
     public int BorrowingId { get; set; }
     public DateTime BorrowDate { get; set; }
     public DateTime? ReturnDate { get; set; }
     public bool IsOver { get; set; }
+    public bool IsDeleted { get; set; }
 
     // Relationship with Customer   
     public int CustomerId { get; set; }

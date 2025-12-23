@@ -1,0 +1,202 @@
+﻿@model ReferenceDataViewModel
+
+<h2>Reference Data</h2>
+
+<ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item">
+        <a class="nav-link active" data-bs-toggle="tab" href="#countries">Countries</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#cities">Cities</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#nationalities">Nationalities</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#publishers">Publishers</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link" data-bs-toggle="tab" href="#genres">Genres</a>
+    </li>
+</ul>
+
+<div class="tab-content mt-3">
+
+    <!-- COUNTRIES -->
+    <div id="countries" class="tab-pane fade show active">
+        <form asp-action="AddCountry" method="post" class="mb-3 d-flex">
+            <input name="name" class="form-control me-2" placeholder="Country name" required />
+            <button class="btn btn-primary">Add</button>
+        </form>
+
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Delete</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var c in Model.Countries)
+                {
+                    <tr>
+                        <td>@c.Name</td>
+                        <td>
+                            <a asp-action="DeleteCountry" asp-route-id="@c.CountryID"
+                               class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- CITIES -->
+    <div id="cities" class="tab-pane fade">
+        <form asp-action="AddCity" method="post" class="mb-3 row g-2">
+            <div class="col">
+                <input name="name" class="form-control" placeholder="City name" required />
+            </div>
+            <div class="col">
+                <select name="countryId" class="form-select">
+                    @foreach (var c in Model.Countries)
+                    {
+                        <option value="@c.CountryID">@c.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col">
+                <button class="btn btn-primary">Add</button>
+            </div>
+        </form>
+
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Country</th>
+                    <th>Delete</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var city in Model.Cities)
+                {
+                    <tr>
+                        <td>@city.Name</td>
+                        <td>@city.Country.Name</td>
+                        <td>
+                            <a asp-action="DeleteCity" asp-route-id="@city.CityID"
+                               class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PUBLISHERS -->
+    <div id="publishers" class="tab-pane fade">
+        <form asp-action="AddPublisher" method="post" class="mb-3 row g-2">
+            <div class="col">
+                <input name="name" class="form-control" placeholder="Publisher name" required />
+            </div>
+            <div class="col">
+                <select name="cityId" class="form-select">
+                    @foreach (var c in Model.Cities)
+                    {
+                        <option value="@c.CityID">@c.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="col">
+                <button class="btn btn-primary">Add</button>
+            </div>
+        </form>
+
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>City</th>
+                    <th>Delete</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var p in Model.Publishers)
+                {
+                    <tr>
+                        <td>@p.Name</td>
+                        <td>@p.City.Name</td>
+                        <td>
+                            <a asp-action="DeletePublisher" asp-route-id="@p.PublisherID"
+                               class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>  
+        </table>
+    </div>
+
+    <!-- NATIONALITIES -->
+    <div id="nationalities" class="tab-pane fade">
+        <form asp-action="AddNationality" method="post" class="mb-3 d-flex">
+            <input name="name" class="form-control me-2" placeholder="Nationality" required />
+            <button class="btn btn-primary">Add</button>
+        </form>
+
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Delete</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var n in Model.Nationalities)
+                {
+                    <tr>
+                        <td>@n.Name</td>
+                        <td>
+                            <a asp-action="DeleteNationality" asp-route-id="@n.NationalityID"
+                               class="btn btn-sm btn-danger">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody> 
+        </table>
+    </div>
+
+    <!-- GENRES -->
+    <div id="genres" class="tab-pane fade">
+        <form asp-action="AddGenre" method="post" class="mb-3 d-flex">
+            <input name="name" class="form-control me-2" placeholder="Genre" required />
+            <button class="btn btn-primary">Add</button>
+        </form>
+
+        <table class="table table-sm">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Delete</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            @foreach (var g in Model.Genres)
+            {
+                <tr>
+                    <td>@g.Name</td>
+                    <td>
+                        <a asp-action="DeleteGenre" asp-route-id="@g.GenreID"
+                           class="btn btn-sm btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>

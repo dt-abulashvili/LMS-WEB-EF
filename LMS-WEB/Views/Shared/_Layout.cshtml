@@ -5,35 +5,135 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - LMS_WEB</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/LMS_WEB.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LMS_WEB</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+    <div class="container-fluid">
+        <div class="row flex-nowrap">
+            <div class="col-auto col-md-3 col-xl-2 px-sm-2 px-0 bg-dark">
+                <div class="d-flex flex-column align-items-center align-items-sm-start px-3 pt-2 text-white min-vh-100">
+                    <a href="/" class="d-flex align-items-center pb-3 mb-md-0 me-md-auto text-white text-decoration-none">
+                        <span class="fs-5 d-none d-sm-inline">Library Management System</span>
+                    </a>
+                    <ul class="nav nav-pills flex-column mb-sm-auto mb-0 align-items-center align-items-sm-start" id="menu">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            <a asp-controller="Home" asp-action="Index" class="nav-link align-middle px-0 text-white">
+                                <i class="fs-4 bi bi-house-fill"></i><span class="ms-1 d-none d-sm-inline">Home</span>
+                            </a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+
+                        <li>
+                            <a href="#catalogSubmenu" data-bs-toggle="collapse"
+                               class="nav-link px-0 align-middle text-white">
+                                <i class="fs-4 bi bi-journal-bookmark-fill"></i>
+                                <span class="ms-1 d-none d-sm-inline">Catalog</span>
+                            </a>
+
+                            <ul class="collapse nav flex-column ms-3" id="catalogSubmenu" data-bs-parent="#menu">
+                                <li class="nav-item">
+                                    <a asp-controller="Books" asp-action="Index"
+                                       class="nav-link px-0 text-white">
+                                        <span class="d-none d-sm-inline">Books</span>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a asp-controller="Authors" asp-action="Index"
+                                       class="nav-link px-0 text-white">
+                                        <span class="d-none d-sm-inline">Authors</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#borrowingsSubmenu" data-bs-toggle="collapse"
+                               class="nav-link px-0 align-middle text-white">
+                                <i class="fs-4 bi bi-arrow-left-right"></i>
+                                <span class="ms-1 d-none d-sm-inline">Borrowings</span>
+                            </a>
+
+                            <ul class="collapse nav flex-column ms-3" id="borrowingsSubmenu" data-bs-parent="#menu">
+                                <li>
+                                    <a asp-controller="Borrowings" asp-action="Active" class="nav-link px-0 text-white">
+                                        Active Borrowings
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Borrowings" asp-action="History" class="nav-link px-0 text-white">
+                                        Borrow History
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Borrowings" asp-action="Create" class="nav-link px-0 text-white">
+                                        Create Borrowing
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#customersSubmenu" data-bs-toggle="collapse"
+                               class="nav-link px-0 align-middle text-white">
+                                <i class="fs-4 bi bi-people-fill"></i>
+                                <span class="ms-1 d-none d-sm-inline">Customers</span>
+                            </a>
+
+                            <ul class="collapse nav flex-column ms-3" id="customersSubmenu" data-bs-parent="#menu">
+                                <li>
+                                    <a asp-controller="Customers" asp-action="Index" class="nav-link px-0 text-white">
+                                        Customers
+                                    </a>
+                                </li>
+                                <li>
+                                    <a asp-controller="Subscriptions" asp-action="Index" class="nav-link px-0 text-white">
+                                        Subscriptions
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#adminSubmenu" data-bs-toggle="collapse"
+                               class="nav-link px-0 align-middle text-white">
+                                <i class="fs-4 bi bi-gear-fill"></i>
+                                <span class="ms-1 d-none d-sm-inline">Administration</span>
+                            </a>
+
+                            <ul class="collapse nav flex-column ms-3" id="adminSubmenu" data-bs-parent="#menu">
+                                <li>
+                                    <a asp-controller="ReferenceData" asp-action="Index" class="nav-link px-0 text-white">
+                                        Reference Data
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <li>
+                            <a href="#systemSubmenu" data-bs-toggle="collapse"
+                               class="nav-link px-0 align-middle text-white">
+                                <i class="fs-4 bi bi-diagram-3-fill"></i>
+                                <span class="ms-1 d-none d-sm-inline">System</span>
+                            </a>
+
+                            <ul class="collapse nav flex-column ms-3" id="systemSubmenu" data-bs-parent="#menu">
+                                <li>
+                                    <a asp-controller="System" asp-action="Archived" class="nav-link px-0 text-white">
+                                        Archived Items
+                                    </a>
+                                </li>
+                            </ul>
                         </li>
                     </ul>
+                    <hr>
+
                 </div>
             </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
+            <div class="col py-3">
+                @RenderBody()
+            </div>
+        </div>
     </div>
 
     <footer class="border-top footer text-muted">
