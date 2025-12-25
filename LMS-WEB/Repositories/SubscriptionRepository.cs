@@ -36,4 +36,19 @@ internal class SubscriptionRepository : GenericRepository<Subscription>, ISubscr
     {
         return await _dbContext.Subscriptions.AnyAsync(s => s.CustomerId == customerId && !s.IsCancelled);
     }
+
+    public async Task<IEnumerable<Subscription>> FilterAsync(int? customerId, bool? status)
+    {
+        var query = _dbContext.Subscriptions.AsQueryable();
+
+        if (customerId.HasValue)
+            query = query.Where(c => c.CustomerId == customerId);
+
+        if (status.HasValue)
+            query = query.Where(s => s.IsCancelled == status.Value);
+
+        return await query
+            .Include(c => c.Customer)
+            .ToListAsync();
+    }
 }

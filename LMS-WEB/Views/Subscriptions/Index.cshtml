@@ -1,0 +1,154 @@
+﻿@model SubscriptionsViewModel
+
+<h2>Subscriptions</h2>
+
+<div class="tab-content mt-3">
+    <div id="books" class="tab-pane fade show active">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Add New Customer</h5>
+            </div>
+            <div class="card-body">
+
+                <form asp-action="AddSubscription" method="post" class="row g-2">
+
+                    <div class="col-md-3">
+                        <label class="form-label">Start date</label>
+                        <input asp-for="StartDate"
+                               type="date"
+                               class="form-control"
+                               required />
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">Period</label>
+                        <select asp-for="Period" class="form-select">
+                            @foreach (SubscriptionPeriod period in Enum.GetValues(typeof(SubscriptionPeriod)))
+                            {
+                                <option value="@period">@period</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="form-label">Customer</label>
+                        <select name="customerId" class="form-select">
+                            @foreach (var c in Model.Customers)
+                            {
+                                <option value="@c.CustomerID">@c.FullName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-1 align-self-end">
+                        <button class="btn btn-success w-100">Add</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">Search & Filters</h5>
+            </div>
+            <div class="card-body">
+
+                <form asp-action="Index" method="get" class="row g-2">
+
+                    <div class="col-md-2">
+                        <select name="customerId" class="form-select">
+                            <option value="">All customers</option>
+                            @foreach (var c in Model.Customers)
+                            {
+                                <option value="@c.CustomerID">@c.FullName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <select name="status" class="form-select">
+                            <option value="">All statuses</option>
+                            <option value="false">Ongoing</option>
+                            <option value="true">Cancelled</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100">Apply</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">Subscriptions</h5>
+            </div>
+            <div class="card-body p-0">
+
+                <table class="table table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Customer Name</th>
+                            <th>Period</th>
+                            <th>Start Date</th>
+                            <th>End Date</th>
+                            <th>Status</th>
+                            <th class="text-center">Cancel</th>
+                            <th class="text-center">Delete</th>
+                            <th class="text-center">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var subscription in Model.Subscriptions)
+                        {
+                            <tr>
+                                <td>@subscription.Customer?.FullName</td>
+                                <td>@subscription.Period</td>
+                                <td>@subscription.StartDate</td>
+                                <td>@subscription.EndDate</td>
+                                <td>@(subscription.IsCancelled ? "Cancelled" : "On Going")</td>
+
+                                <td class="text-center">
+                                    <form asp-action="CancelSubscription"
+                                          asp-route-id="@subscription.SubscriptionID"
+                                          method="post"
+                                          class="d-inline">
+                                        <button type="submit"
+                                                class="btn btn-sm btn-danger"
+                                                onclick="return confirm('Cancel this subscription?');">
+                                            Cancel
+                                        </button>
+                                    </form>
+                                </td>
+
+                                <td class="text-center">
+                                    <a asp-action="DeleteSubscription"
+                                       asp-route-id="@subscription.SubscriptionID"
+                                       class="btn btn-sm btn-danger">
+                                        Delete
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <a asp-action="UpdateSubscription"
+                                       asp-route-id="@subscription.SubscriptionID"
+                                       class="btn btn-sm btn-secondary">
+                                        Edit
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
