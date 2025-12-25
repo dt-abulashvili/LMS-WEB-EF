@@ -27,4 +27,20 @@ internal class CustomerRepository : GenericRepository<Customer>, ICustomerReposi
             .Include(c => c.Subscriptions)
             .FirstOrDefaultAsync(c => c.CustomerID == id);
     }
+
+    public async Task<IEnumerable<Customer>> FilterAsync(string? name, int? cityId)
+    {
+        var query = _dbContext.Customers.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(name))
+            query = query.Where(c =>
+                EF.Functions.Like(c.FullName, $"%{name}%"));
+
+        if (cityId.HasValue)
+            query = query.Where(c => c.CityID == cityId);
+
+        return await query
+            .Include(c => c.City)
+            .ToListAsync();
+    }
 }

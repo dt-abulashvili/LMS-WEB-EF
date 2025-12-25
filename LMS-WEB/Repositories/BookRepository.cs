@@ -24,10 +24,28 @@ internal sealed class BookRepository : GenericRepository<Book>, IBookRepository
             .FirstOrDefaultAsync(b => b.BookID == id);
     }
 
-    public async Task<IEnumerable<Book>> SearchAsync(string title)
+    public async Task<IEnumerable<Book>> FilterAsync(string? title, int? authorId, int? genreId, int? publisherId)
     {
-        return await _dbContext.Books
-            .Where(b => EF.Functions.Like(b.Title, $"%{title}%"))
+        var query = _dbContext.Books.AsQueryable();
+
+        if (!string.IsNullOrWhiteSpace(title))
+            query = query.Where(b =>
+                EF.Functions.Like(b.Title, $"%{title}%"));
+
+        if (authorId.HasValue)
+            query = query.Where(b => b.AuthorID == authorId);
+
+        if (genreId.HasValue)
+            query = query.Where(b => b.GenreID == genreId);
+
+        if (publisherId.HasValue)
+            query = query.Where(b => b.PublisherId == publisherId);
+
+        return await query
+            .Include(b => b.Author)
+            .Include(b => b.Genre)
+            .Include(b => b.Publisher)
             .ToListAsync();
     }
+
 }

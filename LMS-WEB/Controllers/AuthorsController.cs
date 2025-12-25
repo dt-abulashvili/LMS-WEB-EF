@@ -1,10 +1,6 @@
-﻿using LMS_WEB.Data;
-using LMS_WEB.Repositories;
-using LMS_WEB.Repositories.Interfaces;
-using LMS_WEB.Services;
+﻿using LMS_WEB.Repositories.Interfaces;
 using LMS_WEB.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-
 namespace LMS_WEB.Controllers;
 
 public class AuthorsController : Controller
@@ -20,7 +16,7 @@ public class AuthorsController : Controller
     {
         var vm = new AuthorsViewModel
         {
-            Authors = await _unitOfWork.Authors.GetAllAsync(),
+            Authors = await _unitOfWork.Authors.GetAllWithBooksAsync(),
             Cities = await _unitOfWork.Cities.GetAllAsync(),
             Nationalities = await _unitOfWork.Nationalities.GetAllAsync()
         };
@@ -45,6 +41,20 @@ public class AuthorsController : Controller
         return RedirectToAction("Index");
     }
 
-    // Update
+    // Details
+    public async Task<IActionResult> Details(int id)
+    {
+        var author = await _unitOfWork.Authors.GetAuthorWithBooks(id);
 
+        if (author == null)
+            return NotFound();
+
+        var vm = new AuthorBooksViewModel
+        {
+            AuthorName = $"{author.FirstName} {author.LastName}",
+            Books = author.Books
+        };
+
+        return View(vm);
+    }
 }

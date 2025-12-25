@@ -1,0 +1,37 @@
+﻿@model AuthorBooksViewModel
+
+<h2>Books by @Model.AuthorName</h2>
+
+<div class="tab-content mt-3">
+    <div class="tab-pane fade show active">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Published Year</th>
+                    <th>Genre</th>
+                    <th>Publisher</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var book in Model.Books)
+                {
+                    <tr>
+                        <td>@book.Title</td>
+                        <td>@book.PublishedYear</td>
+                        <td>@book.Genre?.Name</td>
+                        <td>@book.Publisher?.Name</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+
+        @if (!Model.Books.Any())
+        {
+            <div class="alert alert-info">
+                This author has no books.
+            </div>
+        }
+    </div>
+    <a asp-action="Index" class="btn btn-secondary mt-3">Back to Authors</a>
+</div>

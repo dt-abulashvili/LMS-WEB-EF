@@ -1,0 +1,167 @@
+﻿@model BooksViewModel
+
+<h2>Books</h2>
+
+<div class="tab-content mt-3">
+    <div id="books" class="tab-pane fade show active">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">➕ Add New Book</h5>
+            </div>
+            <div class="card-body">
+
+                <form asp-action="AddBook" method="post" class="row g-2">
+
+                    <div class="col-md-3">
+                        <input name="title" class="form-control" placeholder="Book title" required />
+                    </div>
+
+                    <div class="col-md-2">
+                        <input name="publishedYear" class="form-control" placeholder="Year" required />
+                    </div>
+
+                    <div class="col-md-2">
+                        <select name="authorId" class="form-select">
+                            @foreach (var a in Model.Authors)
+                            {
+                                <option value="@a.AuthorID">@a.LastName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <select name="genreId" class="form-select">
+                            @foreach (var g in Model.Genres)
+                            {
+                                <option value="@g.GenreID">@g.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <select name="publisherId" class="form-select">
+                            @foreach (var p in Model.Publishers)
+                            {
+                                <option value="@p.PublisherID">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-1">
+                        <button class="btn btn-success w-100">Add</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">🔍 Search & Filters</h5>
+            </div>
+            <div class="card-body">
+
+                <form asp-action="Index" method="get" class="row g-2">
+
+                    <div class="col-md-4">
+                        <input type="text"
+                               name="search"
+                               class="form-control"
+                               placeholder="Search by title..." />
+                    </div>
+
+                    <div class="col-md-2">
+                        <select name="authorId" class="form-select">
+                            <option value="">All authors</option>
+                            @foreach (var a in Model.Authors)
+                            {
+                                <option value="@a.AuthorID">@a.LastName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <select name="genreId" class="form-select">
+                            <option value="">All genres</option>
+                            @foreach (var g in Model.Genres)
+                            {
+                                <option value="@g.GenreID">@g.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <select name="publisherId" class="form-select">
+                            <option value="">All publishers</option>
+                            @foreach (var p in Model.Publishers)
+                            {
+                                <option value="@p.PublisherID">@p.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100">Apply</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">📚 Books</h5>
+            </div>
+            <div class="card-body p-0">
+
+                <table class="table table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>Year</th>
+                            <th>Author</th>
+                            <th>Genre</th>
+                            <th>Publisher</th>
+                            <th class="text-center">Delete</th>
+                            <th class="text-center">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var book in Model.Books)
+                        {
+                            <tr>
+                                <td>@book.Title</td>
+                                <td>@book.PublishedYear</td>
+                                <td>@book.Author?.FirstName @book.Author?.LastName</td>
+                                <td>@book.Genre?.Name</td>
+                                <td>@book.Publisher?.Name</td>
+                                <td class="text-center">
+                                    <a asp-action="DeleteBook"
+                                       asp-route-id="@book.BookID"
+                                       class="btn btn-sm btn-danger">
+                                        Delete
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <a asp-action="UpdateBook"
+                                       asp-route-id="@book.BookID"
+                                       class="btn btn-sm btn-secondary">
+                                        Edit
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

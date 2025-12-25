@@ -14,10 +14,13 @@ internal class AuthorRepository : GenericRepository<Author>, IAuthorRepository
         _dbContext = context;
     }
 
-    public async Task<Author?> GetWithBooksAsync(int id)
+    public async Task<Author?> GetAuthorWithBooks(int id)
     {
         return await _dbContext.Authors
-            .Include(b => b.Books)
+            .Include(a => a.Books)
+                .ThenInclude(b => b.Genre)
+            .Include(a => a.Books)
+                .ThenInclude(b => b.Publisher)
             .FirstOrDefaultAsync(a => a.AuthorID == id);
     }
 

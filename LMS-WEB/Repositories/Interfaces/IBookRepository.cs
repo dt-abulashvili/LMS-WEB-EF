@@ -4,4 +4,5 @@ namespace LMS_WEB.Repositories.Interfaces;
 
 public interface IBookRepository : IGenericRepository<Book>
 {
+    Task<IEnumerable<Book>> FilterAsync(string? title, int? authorId, int? genreId, int? publisherId);
 }

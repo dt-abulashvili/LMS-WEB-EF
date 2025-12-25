@@ -1,5 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
-using LMS_WEB.Models;
+﻿using LMS_WEB.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LMS_WEB.Data;
 
@@ -25,59 +25,41 @@ public class AppDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        // Book - Author
         modelBuilder.Entity<Book>()
-            .HasMany(b => b.Authors)
+            .HasOne(b => b.Author)
             .WithMany(a => a.Books)
-            .UsingEntity<Dictionary<string, object>>(
-                "AuthorBook",
-                j => j
-                    .HasOne<Author>()
-                    .WithMany()
-                    .HasForeignKey("AuthorId")
-                    .OnDelete(DeleteBehavior.Restrict),
-                j => j
-                    .HasOne<Book>()
-                    .WithMany()
-                    .HasForeignKey("BookId")
-                    .OnDelete(DeleteBehavior.Restrict)
-            );
+            .HasForeignKey(b => b.AuthorID)
+            .OnDelete(DeleteBehavior.Restrict);
 
-        // Book - Genre
         modelBuilder.Entity<Book>()
-            .HasMany(b => b.Genres)
+            .HasOne(b => b.Publisher)
+            .WithMany(p => p.Books)
+            .HasForeignKey(b => b.PublisherId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Book>()
+            .HasOne(b => b.Genre)
             .WithMany(g => g.Books)
-            .UsingEntity<Dictionary<string, object>>(
-                "BookGenre",
-                j => j
-                    .HasOne<Genre>()
-                    .WithMany()
-                    .HasForeignKey("GenreId")
-                    .OnDelete(DeleteBehavior.Restrict),
-                j => j
-                    .HasOne<Book>()
-                    .WithMany()
-                    .HasForeignKey("BookId")
-                    .OnDelete(DeleteBehavior.Restrict)
-            );
+            .HasForeignKey(b => b.GenreID)
+            .OnDelete(DeleteBehavior.Restrict);
 
         // Borrowing - Book
         modelBuilder.Entity<Borrowing>()
-            .HasMany(br => br.Books)
-            .WithMany(b => b.Borrowings)
-            .UsingEntity<Dictionary<string, object>>(
-                "BorrowingBook",
-                j => j
-                    .HasOne<Book>()
-                    .WithMany()
-                    .HasForeignKey("BookId")
-                    .OnDelete(DeleteBehavior.Restrict),
-                j => j
-                    .HasOne<Borrowing>()
-                    .WithMany()
-                    .HasForeignKey("BorrowingId")
-                    .OnDelete(DeleteBehavior.Restrict)
-            );
+                .HasMany(br => br.Books)
+                .WithMany(b => b.Borrowings)
+                .UsingEntity<Dictionary<string, object>>(
+                    "BorrowingBook",
+                    j => j
+                        .HasOne<Book>()
+                        .WithMany()
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Restrict),
+                    j => j
+                        .HasOne<Borrowing>()
+                        .WithMany()
+                        .HasForeignKey("BorrowingId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                );
 
         modelBuilder.Entity<Book>()
             .HasQueryFilter(b => !b.IsDeleted);

@@ -1,0 +1,145 @@
+﻿@model CustomersViewModel
+
+<h2>Customers</h2>
+
+<div class="tab-content mt-3">
+    <div id="books" class="tab-pane fade show active">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Add New Customer</h5>
+            </div>
+            <div class="card-body">
+
+                <form asp-action="AddCustomer" method="post" class="row g-2">
+
+                    <div class="col-md-3">
+                        <input name="fullName" class="form-control" placeholder="Customer full name" required />
+                    </div>
+
+                    <div class="col-md-2">
+                        <select name="cityId" class="form-select">
+                            @foreach (var c in Model.Cities)
+                            {
+                                <option value="@c.CityID">@c.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <select name="nationalityId" class="form-select">
+                            @foreach (var n in Model.Nationalities)
+                            {
+                                <option value="@n.NationalityID">@n.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-1">
+                        <button class="btn btn-success w-100">Add</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">Search & Filters</h5>
+            </div>
+            <div class="card-body">
+
+                <form asp-action="Index" method="get" class="row g-2">
+
+                    <div class="col-md-4">
+                        <input type="text"
+                               name="search"
+                               class="form-control"
+                               placeholder="Search by title..." />
+                    </div>
+
+                    <div class="col-md-2">
+                        <select name="cityId" class="form-select">
+                            <option value="">All cities</option>
+                            @foreach (var c in Model.Cities)
+                            {
+                                <option value="@c.CityID">@c.Name</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100">Apply</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">Customers</h5>
+            </div>
+            <div class="card-body p-0">
+
+                <table class="table table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Name</th>
+                            <th>City</th>
+                            <th>Borrowings</th>
+                            <th>Subscriptions</th>
+                            <th class="text-center">Delete</th>
+                            <th class="text-center">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var customer in Model.Customers)
+                        {
+                            <tr>
+                                <td>@customer.FullName</td>
+                                <td>@customer.City?.Name</td>
+
+                                <td>
+                                    <a asp-action="ShowBorrowings" 
+                                    asp-route-id="@customer.CustomerID"
+                                       class="btn btn-sm btn-primary">
+                                        Borrowings
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <a asp-action="ShowSubscriptions"
+                                       asp-route-id="@customer.CustomerID"
+                                       class="btn btn-sm btn-primary">
+                                        Subscriptions
+                                    </a>
+                                </td>
+
+                                <td class="text-center">
+                                    <a asp-action="DeleteCustomer"
+                                       asp-route-id="@customer.CustomerID"
+                                       class="btn btn-sm btn-danger">
+                                        Delete
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <a asp-action="UpdateCustomer"
+                                       asp-route-id="@customer.CustomerID"
+                                       class="btn btn-sm btn-secondary">
+                                        Edit
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

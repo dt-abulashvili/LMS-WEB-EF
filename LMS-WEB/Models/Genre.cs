@@ -8,6 +8,6 @@ public class Genre : ISoftDeletable
     public string Name { get; set; } = null!;
     public bool IsDeleted { get; set; }
 
-    // Oany-to-many
+    // One-to-many
     public ICollection<Book> Books { get; set; } = new List<Book>();
 }
