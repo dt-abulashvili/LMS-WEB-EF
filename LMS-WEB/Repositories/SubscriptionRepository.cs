@@ -32,12 +32,7 @@ internal class SubscriptionRepository : GenericRepository<Subscription>, ISubscr
         return await _dbContext.Subscriptions.Where(s => s.CustomerId == customerId).ToListAsync();
     }
 
-    public async Task<bool> HasActiveSubscriptionAsync(int customerId)
-    {
-        return await _dbContext.Subscriptions.AnyAsync(s => s.CustomerId == customerId && !s.IsCancelled);
-    }
-
-    public async Task<IEnumerable<Subscription>> FilterAsync(int? customerId, bool? status)
+    public async Task<IEnumerable<Subscription>> FilterAsync(int? customerId, SubscriptionStatus? status)
     {
         var query = _dbContext.Subscriptions.AsQueryable();
 
@@ -45,7 +40,37 @@ internal class SubscriptionRepository : GenericRepository<Subscription>, ISubscr
             query = query.Where(c => c.CustomerId == customerId);
 
         if (status.HasValue)
-            query = query.Where(s => s.IsCancelled == status.Value);
+        {
+            var now = DateTime.UtcNow;
+
+            query = status.Value switch
+            {
+                SubscriptionStatus.Active =>
+                    query.Where(s =>
+                        !s.IsCancelled &&
+                        (
+                            (s.Period == SubscriptionPeriod.Week && s.StartDate.AddDays(7) >= now) ||
+                            (s.Period == SubscriptionPeriod.Month && s.StartDate.AddMonths(1) >= now) ||
+                            (s.Period == SubscriptionPeriod.Year && s.StartDate.AddYears(1) >= now)
+                        )
+                    ),
+
+                SubscriptionStatus.Expired =>
+                    query.Where(s =>
+                        !s.IsCancelled &&
+                        (
+                            (s.Period == SubscriptionPeriod.Week && s.StartDate.AddDays(7) < now) ||
+                            (s.Period == SubscriptionPeriod.Month && s.StartDate.AddMonths(1) < now) ||
+                            (s.Period == SubscriptionPeriod.Year && s.StartDate.AddYears(1) < now)
+                        )
+                    ),
+
+                SubscriptionStatus.Cancelled =>
+                    query.Where(s => s.IsCancelled),
+
+                _ => query
+            };
+        }
 
         return await query
             .Include(c => c.Customer)

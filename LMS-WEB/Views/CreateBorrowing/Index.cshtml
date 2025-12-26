@@ -1,0 +1,72 @@
+﻿@model CreateBorrowingViewModel
+
+<h2>Borrowings</h2>
+
+<div class="tab-content mt-3">
+    <div id="books" class="tab-pane fade show active">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0">Add New Borrowing</h5>
+            </div>
+            <div class="card-body">
+
+                <form asp-action="AddBorrowing" method="post" class="row g-2">
+
+                    <div class="col-md-2">
+                        <label class="form-label">Customer</label>
+                        <select asp-for="CustomerId" class="form-select">
+                            @foreach (var c in Model.Customers)
+                            {
+                                <option value="@c.CustomerID">@c.FullName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-12">
+                        <label class="form-label">Books</label>
+                        <div class="border p-2 rounded">
+                            @foreach (var book in Model.Books)
+                            {
+                                <div class="form-check">
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="SelectedBookIds"
+                                           value="@book.BookID" />
+                                    <label class="form-check-label">
+                                        @book.Title
+                                    </label>
+                                </div>
+                            }
+                        </div>
+                    </div>
+
+
+                    <div class="col-md-3">
+                        <label class="form-label">Borrow date</label>
+                        <input asp-for="BorrowDate"
+                               type="date"
+                               class="form-control"
+                               required />
+                    </div>
+
+                    <div class="col-md-3">
+                        <label class="form-label">Return date</label>
+                        <input asp-for="ReturnDate"
+                               type="date"
+                               class="form-control"
+                               required />
+                    </div>
+
+                    <div class="col-md-1 align-self-end">
+                        <button class="btn btn-success w-100">Add</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+

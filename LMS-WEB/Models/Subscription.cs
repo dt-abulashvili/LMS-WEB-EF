@@ -26,6 +26,27 @@ public class Subscription : ISoftDeletable
         SubscriptionPeriod.Year => StartDate.AddYears(1),
         _ => throw new InvalidOperationException("Invalid subscription period")
     };
+
+    [NotMapped]
+    public SubscriptionStatus Status
+    {
+        get
+        {
+            if (IsCancelled) return SubscriptionStatus.Cancelled;
+            if (EndDate < DateTime.UtcNow) return SubscriptionStatus.Expired;
+            return SubscriptionStatus.Active;
+        }
+    }
+
+    [NotMapped]
+    public bool IsActive => Status == SubscriptionStatus.Active;
+}
+
+public enum SubscriptionStatus
+{
+    Active,
+    Cancelled,
+    Expired
 }
 
 public enum SubscriptionPeriod

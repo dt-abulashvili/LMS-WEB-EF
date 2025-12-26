@@ -3,7 +3,7 @@
 <h2>Subscriptions</h2>
 
 <div class="tab-content mt-3">
-    <div id="books" class="tab-pane fade show active">
+    <div id="subscriptions" class="tab-pane fade show active">
         <div class="card mb-4 shadow-sm">
             <div class="card-header bg-primary text-white">
                 <h5 class="mb-0">Add New Customer</h5>
@@ -70,8 +70,9 @@
                     <div class="col-md-2">
                         <select name="status" class="form-select">
                             <option value="">All statuses</option>
-                            <option value="false">Ongoing</option>
-                            <option value="true">Cancelled</option>
+                            <option value="Active">Active</option>
+                            <option value="Cancelled">Cancelled</option>
+                            <option value="Expired">Expired</option>
                         </select>
                     </div>
 
@@ -111,7 +112,7 @@
                                 <td>@subscription.Period</td>
                                 <td>@subscription.StartDate</td>
                                 <td>@subscription.EndDate</td>
-                                <td>@(subscription.IsCancelled ? "Cancelled" : "On Going")</td>
+                                <td>@subscription.Status</td>
 
                                 <td class="text-center">
                                     <form asp-action="CancelSubscription"
@@ -119,7 +120,7 @@
                                           method="post"
                                           class="d-inline">
                                         <button type="submit"
-                                                class="btn btn-sm btn-danger"
+                                                class="btn btn-sm btn-primary"
                                                 onclick="return confirm('Cancel this subscription?');">
                                             Cancel
                                         </button>
@@ -133,6 +134,7 @@
                                         Delete
                                     </a>
                                 </td>
+
                                 <td class="text-center">
                                     <a asp-action="UpdateSubscription"
                                        asp-route-id="@subscription.SubscriptionID"

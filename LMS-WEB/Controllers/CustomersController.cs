@@ -34,4 +34,21 @@ public class CustomersController : Controller
         await _unitOfWork.SaveChangesAsync();
         return RedirectToAction("Index");
     }
+
+    // Subscriptions
+    public async Task<IActionResult> ShowSubscriptions(int id)
+    {
+        var customer = await _unitOfWork.Customers.GetWithSubscriptionsAsync(id);
+
+        if (customer == null)
+            return NotFound();
+
+        var vm = new CustomerSubscriptionsViewModel
+        {
+            CustomerName = $"{customer.FullName}",
+            Subscriptions = customer.Subscriptions
+        };
+
+        return View(vm);
+    }
 }

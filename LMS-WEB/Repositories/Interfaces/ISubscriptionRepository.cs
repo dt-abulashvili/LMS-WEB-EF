@@ -4,7 +4,7 @@ namespace LMS_WEB.Repositories.Interfaces;
 
 public interface ISubscriptionRepository : IGenericRepository<Subscription>
 {
-    Task<IEnumerable<Subscription>> FilterAsync(int? customerId, bool? status);
+    Task<IEnumerable<Subscription>> FilterAsync(int? customerId, SubscriptionStatus? status);
     Task CancelAsync(int subscriptionId);
 }
 

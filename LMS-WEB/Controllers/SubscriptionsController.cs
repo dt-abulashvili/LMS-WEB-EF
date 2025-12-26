@@ -14,7 +14,7 @@ public class SubscriptionsController : Controller
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<IActionResult> Index(int? customerId, bool? status)
+    public async Task<IActionResult> Index(int? customerId, SubscriptionStatus? status)
     {
         var subscriptions = await _unitOfWork.Subscriptions.FilterAsync(customerId, status);
 

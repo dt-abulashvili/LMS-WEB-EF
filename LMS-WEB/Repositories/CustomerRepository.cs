@@ -21,9 +21,9 @@ internal class CustomerRepository : GenericRepository<Customer>, ICustomerReposi
             .FirstOrDefaultAsync(c => c.CustomerID == id);
     }
 
-    public Task<Customer?> GetWithSubscriptionsAsync(int id)
+    public async Task<Customer?> GetWithSubscriptionsAsync(int id)
     {
-        return _dbContext.Customers
+        return await _dbContext.Customers
             .Include(c => c.Subscriptions)
             .FirstOrDefaultAsync(c => c.CustomerID == id);
     }

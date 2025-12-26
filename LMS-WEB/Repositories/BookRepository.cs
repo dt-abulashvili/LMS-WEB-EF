@@ -2,6 +2,7 @@
 using LMS_WEB.Models;
 using LMS_WEB.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace LMS_WEB.Repositories;
 
@@ -13,6 +14,12 @@ internal sealed class BookRepository : GenericRepository<Book>, IBookRepository
     {
         _dbContext = context;
     }
+
+    public async Task<IEnumerable<Book>> WhereAsync(Expression<Func<Book, bool>> predicate)
+    {
+        return await _dbSet.Where(predicate).ToListAsync();
+    }
+
 
     // Authors + Genres + Publisher
     public async Task<Book?> GetWithDetailsAsync(int id)

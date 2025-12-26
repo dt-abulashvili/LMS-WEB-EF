@@ -19,6 +19,6 @@ public class Borrowing : ISoftDeletable
     public Subscription? Subscription { get; set; }
 
     // Many-to-many
-    public ICollection<Book> Books { get; set; } = new List<Book>(); 
+    public ICollection<Book> Books { get; set; } = []; 
 
 }
