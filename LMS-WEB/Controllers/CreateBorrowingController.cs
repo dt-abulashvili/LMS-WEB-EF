@@ -20,8 +20,8 @@ public class CreateBorrowingController : Controller
         {
             Customers = await _unitOfWork.Customers.GetAllAsync(),
             Books = await _unitOfWork.Books.GetAllAsync(),
-            BorrowDate = DateTime.Now,
-            ReturnDate = DateTime.Now
+            BorrowDate = DateTime.UtcNow,
+            DueDate = DateTime.UtcNow
         };
 
         return View(vm);
@@ -46,7 +46,7 @@ public class CreateBorrowingController : Controller
         var borrowing = new Borrowing
         {
             BorrowDate = model.BorrowDate,
-            ReturnDate = model.ReturnDate,
+            DueDate = model.DueDate,
             CustomerId = customer.CustomerID,
             SubscriptionID = activeSubscription?.SubscriptionID,
             Subscription = activeSubscription,
@@ -64,5 +64,4 @@ public class CreateBorrowingController : Controller
 
         return RedirectToAction("Index");
     }
-
 }

@@ -21,7 +21,7 @@ internal class BorrowingRepository : GenericRepository<Borrowing>, IBorrowingRep
         if (borrowing == null)
             throw new InvalidOperationException("Borrowing not found.");
 
-        if (borrowing.ReturnDate != null)
+        if (borrowing.IsOver)
             return;
 
         borrowing.ReturnDate = DateTime.UtcNow;
@@ -33,12 +33,53 @@ internal class BorrowingRepository : GenericRepository<Borrowing>, IBorrowingRep
         return await _dbContext.Borrowings.Where(b => b.CustomerId == customerId).ToListAsync();
     }
 
-    public async Task<Borrowing?> GetWithDetailsAsync(int id)
+    public async Task<Borrowing?> GetBooksFromBorrowing(int id)
     {
         return await _dbContext.Borrowings
-            .Include(b => b.Subscription)
-            .Include(b => b.Customer)
             .Include(b => b.Books)
+                .ThenInclude(b => b.Author)
+            .Include(b => b.Books)
+                .ThenInclude(b => b.Genre)
+            .Include(b => b.Books)
+                .ThenInclude(b => b.Publisher)
             .FirstOrDefaultAsync(b => b.BorrowingId == id);
     }
+
+    public async Task<IEnumerable<Borrowing>> FilterAsync(int? customerId, BorrowingStatus? status)
+    {
+        var now = DateTime.UtcNow;
+
+        var query = _dbContext.Borrowings.AsQueryable();
+
+        if (customerId.HasValue)
+            query = query.Where(c => c.CustomerId == customerId);
+
+        if (status.HasValue)
+        {
+            query = status.Value switch
+            {
+                BorrowingStatus.Active =>
+                    query.Where(b =>
+                        !b.IsOver &&
+                        (!b.DueDate.HasValue || b.DueDate >= now)),
+
+                BorrowingStatus.Expired =>
+                    query.Where(b =>
+                        !b.IsOver &&
+                        b.DueDate.HasValue &&
+                        b.DueDate < now),
+
+                BorrowingStatus.Completed =>
+                    query.Where(b => b.IsOver),
+
+                _ => query
+            };
+        }
+
+        return await query
+            .Include(b => b.Customer)
+            .Include(b => b.Books)
+            .ToListAsync();
+    }
+
 }

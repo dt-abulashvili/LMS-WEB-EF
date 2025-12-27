@@ -4,6 +4,7 @@ using LMS_WEB.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LMS_WEB.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20251227073634_ImprovedBorrowings")]
+    partial class ImprovedBorrowings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -142,7 +145,9 @@ namespace LMS_WEB.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.HasIndex("SubscriptionID");
+                    b.HasIndex("SubscriptionID")
+                        .IsUnique()
+                        .HasFilter("[SubscriptionID] IS NOT NULL");
 
                     b.ToTable("Borrowings");
                 });
@@ -387,8 +392,8 @@ namespace LMS_WEB.Migrations
                         .IsRequired();
 
                     b.HasOne("LMS_WEB.Models.Subscription", "Subscription")
-                        .WithMany("Borrowings")
-                        .HasForeignKey("SubscriptionID");
+                        .WithOne("Borrowing")
+                        .HasForeignKey("LMS_WEB.Models.Borrowing", "SubscriptionID");
 
                     b.Navigation("Customer");
 
@@ -492,7 +497,7 @@ namespace LMS_WEB.Migrations
 
             modelBuilder.Entity("LMS_WEB.Models.Subscription", b =>
                 {
-                    b.Navigation("Borrowings");
+                    b.Navigation("Borrowing");
                 });
 #pragma warning restore 612, 618
         }

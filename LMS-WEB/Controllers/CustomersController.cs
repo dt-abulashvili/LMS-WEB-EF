@@ -51,4 +51,22 @@ public class CustomersController : Controller
 
         return View(vm);
     }
+
+    // Borrowings
+    public async Task<IActionResult> ShowBorrowings(int id)
+    {
+        var customer = await _unitOfWork.Customers.GetWithBorrowingsAsync(id);
+
+        if (customer == null)
+            return NotFound();
+
+        var vm = new CustomerBorrowingsViewModel
+        {
+            CustomerName = $"{customer.FullName}",
+            Borrowings = customer.Borrowings,
+            Subscriptions = await _unitOfWork.Subscriptions.GetAllAsync()
+        };
+
+        return View(vm);
+    }
 }

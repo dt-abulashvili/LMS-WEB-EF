@@ -1,0 +1,123 @@
+﻿@model BorrowingsViewModel
+
+<h2>Borrowings</h2>
+
+<div class="tab-content mt-3">
+    <div id="borrowings" class="tab-pane fade show active">  
+
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">Search & Filters</h5>
+            </div>
+            <div class="card-body">
+
+                <form asp-action="Index" method="get" class="row g-2">
+
+                    <div class="col-md-2">
+                        <select name="customerId" class="form-select">
+                            <option value="">All customers</option>
+                            @foreach (var c in Model.Customers)
+                            {
+                                <option value="@c.CustomerID">@c.FullName</option>
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <select name="status" class="form-select">
+                            <option value="">All statuses</option>
+                            <option value="Active">Active</option>
+                            <option value="Completed">Completed</option>
+                            <option value="Expired">Expired</option>
+                        </select>
+                    </div>
+
+                    <div class="col-md-2">
+                        <button class="btn btn-primary w-100">Apply</button>
+                    </div>
+
+                </form>
+
+            </div>
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0">Borrowings</h5>
+            </div>
+            <div class="card-body p-0">
+
+                <table class="table table-striped mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Customer</th>
+                            <th>Borrow Date</th>
+                            <th>Due Date</th>
+                            <th>Return Date</th>
+                            <th>Under Subscription</th>
+                            <th>Status</th>
+                            <th>Books</th>
+                            <th>Return</th>
+                            <th class="text-center">Delete</th>
+                            <th class="text-center">Edit</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var borrowing in Model.Borrowings)
+                        {
+                            <tr>
+                                <td>@borrowing.Customer.FullName</td>
+                                <td>@borrowing.BorrowDate</td>
+                                <td>@borrowing.DueDate</td>
+                                <td>@borrowing.ReturnDate</td>
+                                <td>@(borrowing.Subscription == null ? "No" : "Yes")</td>
+                                <td>@borrowing.Status</td>
+
+                                <td>
+                                    <a asp-action="ShowBooks"
+                                       asp-route-id="@borrowing.BorrowingId"
+                                       class="btn btn-sm btn-primary">
+                                        Books
+                                    </a>
+                                </td>
+
+                                <td>
+                                    <form asp-action="ReturnBooks"
+                                          asp-route-id="@borrowing.BorrowingId"
+                                          method="post"
+                                          class="d-inline">
+                                        <button type="submit"
+                                                class="btn btn-sm btn-success"
+                                                onclick="return confirm('Return this borrowing?');">
+                                            Return
+                                        </button>
+                                    </form>
+                                </td>
+
+                                <td class="text-center">
+                                    <a asp-action="DeleteBorrowing"
+                                       asp-route-id="@borrowing.BorrowingId"
+                                       class="btn btn-sm btn-danger">
+                                        Delete
+                                    </a>
+                                </td>
+                                <td class="text-center">
+                                    <a asp-action="UpdateCustomer"
+                                       asp-route-id="@borrowing.BorrowingId"
+                                       class="btn btn-sm btn-secondary">
+                                        Edit
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+

@@ -6,4 +6,5 @@ public interface ICustomerRepository : IGenericRepository<Customer>
 {
     Task<IEnumerable<Customer>> FilterAsync(string? name, int? cityId);
     Task<Customer?> GetWithSubscriptionsAsync(int id);
+    Task<Customer?> GetWithBorrowingsAsync(int id);
 }

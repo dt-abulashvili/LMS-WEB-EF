@@ -5,7 +5,7 @@ namespace LMS_WEB.ViewModels;
 public class CreateBorrowingViewModel
 {
     public DateTime BorrowDate { get; set; }
-    public DateTime ReturnDate { get; set; }
+    public DateTime DueDate { get; set; }
 
     public int CustomerId { get; set; }
 

@@ -15,8 +15,9 @@ public class Subscription : ISoftDeletable
     public int CustomerId { get; set; }
     public Customer Customer { get; set; } = null!;
 
-    // One-to-one
-    public Borrowing? Borrowing { get; set; }
+    // One-to-many
+    public ICollection<Borrowing> Borrowings { get; set; } = new List<Borrowing>();
+
 
     [NotMapped]
     public DateTime EndDate => Period switch
